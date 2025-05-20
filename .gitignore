@@ -6,6 +6,11 @@
 .pnp.js
 
 .env
+.pytest_cache
+
+# Pythonのキャッシュファイル・フォルダを無視
+__pycache__/
+*.pyc
 
 # testing
 /coverage
