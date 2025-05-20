@@ -1,7 +1,5 @@
-from email.mime.text import MIMEText
 import logging
-from datetime import datetime
-import smtplib
+from database.operation.user.send_email import send_email
 from database.operation.user.next_event import get_users_with_event_tomorrow
 
 # ログの基本設定
@@ -10,26 +8,6 @@ logging.basicConfig(
     format='[%(asctime)s] %(levelname)s: %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
-
-
-def send_email(to_email: str, name: str, date_str: str):
-    logging.info(f"'{name}' さんのメールアドレス（{to_email}）にメール送信処理を実行中")
-
-    subject = "【通知】明日のデート予定について"
-    body = f"{name} さん\n\n明日({date_str})にデートの予定があります。\n忘れずに準備をしてくださいね。\n\nよろしくお願いいたします。"
-
-    msg = MIMEText(body)
-    msg["Subject"] = subject
-    msg["From"] = "noreply@example.com"
-    msg["To"] = to_email
-
-    try:
-        # 本番環境に合わせてSMTPサーバーやポートを修正してください
-        with smtplib.SMTP("localhost", 1025) as server:
-            server.send_message(msg)
-        logging.info("メールの送信完了")
-    except Exception as e:
-        logging.error(f"メール送信中にエラーが発生しました: {e}")
 
 def main_job():
     logging.info("--------------------バッチ処理を開始します--------------------")
@@ -52,6 +30,7 @@ def main_job():
 
     finally:
         logging.info("-----------------一連のバッチ処理が完了しました------------------")
+
 
 if __name__ == "__main__":
     main_job()
