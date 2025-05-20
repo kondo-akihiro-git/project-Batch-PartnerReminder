@@ -1,8 +1,11 @@
 from apscheduler.schedulers.background import BackgroundScheduler
-from app.jobs.sample_job import run_sample_job
+from app.jobs.main_job import main_job
 
 def init_scheduler():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(run_sample_job, 'interval', seconds=10, id='sample_job')
+
+    # 現在の日付がデートの前日か判定してメール送信するジョブ
+    scheduler.add_job(main_job, 'interval', seconds=10, id='main_job')
+
     scheduler.start()
     return scheduler
