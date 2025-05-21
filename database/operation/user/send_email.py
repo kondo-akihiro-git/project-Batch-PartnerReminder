@@ -2,6 +2,15 @@ from email.mime.text import MIMEText
 import logging
 import smtplib
 from database.operation.user.get_full_data import get_full_data
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # .env ファイルを読み込む
+
+
+SMTP_HOST = os.getenv("SMTP_HOST", "localhost")
+SMTP_PORT = int(os.getenv("SMTP_PORT", 1025))
+SMTP_FROM = os.getenv("EMAL_FROM", "noreply@example.com")
 
 # ログの基本設定
 logging.basicConfig(
@@ -32,11 +41,11 @@ def send_email(to_email: str, name: str, date_str: str):
 
     msg = MIMEText(body)
     msg["Subject"] = "【リマインド】明日のデート予定について"
-    msg["From"] = "noreply@example.com"
+    msg["From"] = SMTP_FROM
     msg["To"] = to_email
 
     try:
-        with smtplib.SMTP("localhost", 1025) as server:
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
             server.send_message(msg)
         logging.info("メールの送信完了")
     except Exception as e:
