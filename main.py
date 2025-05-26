@@ -1,8 +1,17 @@
+# run_api.py
+from fastapi import FastAPI
 from app.jobs.main_job import main_job
 from dotenv import load_dotenv
 
-# 環境変数読み込み
 load_dotenv()
 
-if __name__ == "__main__":
+app = FastAPI()
+
+@app.get("/")
+def execute():
+    return {"status": "batch executed"}
+
+@app.get("/run-job")
+def run_job():
     main_job()
+    return {"status": "Job executed"}
