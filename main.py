@@ -1,12 +1,8 @@
-from app.scheduler import init_scheduler
-import time
+from app.jobs.main_job import main_job
+from dotenv import load_dotenv
+
+# 環境変数読み込み
+load_dotenv()
 
 if __name__ == "__main__":
-    scheduler = init_scheduler()
-    print("Scheduler started. Running jobs...")
-    try:
-        while True:
-            time.sleep(1)
-    except (KeyboardInterrupt, SystemExit):
-        scheduler.shutdown()
-        print("Scheduler shut down.")
+    main_job()
